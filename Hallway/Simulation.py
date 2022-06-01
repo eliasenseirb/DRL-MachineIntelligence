@@ -1,6 +1,7 @@
 import pygame as pg 
 import random
 from collections import defaultdict
+import time
 
 #Hallway problem
 # ***********
@@ -20,9 +21,12 @@ YELLOW = (234, 221, 0)
 WITDH = 2200
 HEIGHT = 400
 #modifies speed of the game
-FPS = 1
+FPS = 20
 
 SQUARE = HEIGHT / 2
+
+
+
 
 
 
@@ -31,11 +35,13 @@ def main():
     pg.init()
     Hallway = [[5,5,5,5,5,5,5,5,5,5,5],
                [0,0,1,0,2,0,3,0,4,0,0]]
-    pg.display.set_caption("Hallway POMDP Problem")
+    pg.display.set_caption("Hallway Problem")
     screen = pg.display.set_mode((WITDH, HEIGHT))
 
 
-
+    #necessary for reseting the agent
+    global reward_received
+    reward_received = False
     #initilaize Agent
     agent = Agent()
     #initilaize Reward
@@ -63,6 +69,16 @@ def main():
         Agent.random_action(agent)
         #get reward
         reward.get_reward(agent)
+        #resetting the agent
+        if reward_received:
+            Draw.draw_hallway(screen, Hallway)
+            Draw.draw_agent(screen, agent)
+            time.sleep(1)
+            agent = Agent()
+            print("Resetting the agent")
+            reward_received = False
+
+
         clock.tick(FPS)
 
     #Main code end
@@ -113,10 +129,11 @@ class Draw():
 
 
 #five actions possible
-#needs position and heading of the agent 
+#needs position and heading of the agent
+# #actions 0:standing still; 1: moving forward; 2: turning right; 3: turning around; 4: turning left 
 class Action:
     def  __init__(self):
-        self.action_space = [self.stay, self.move, self.turn_right, self.turn_left, self.turn_around ]
+        self.action_space = [self.stay, self.move, self.turn_right, self.turn_around, self.turn_left]
 
     def stay(agent):
         print("I am standing still")
@@ -209,10 +226,15 @@ class Reward():
 
     def get_reward(self, agent):
         #agent is at the goal state
-        if agent.position == [8,1]:
+        if agent.position[0] == 8 and agent.position[1] ==1:
             self.reward = self.reward + 1
+            global reward_received
+            reward_received = True
+            print("GOAL!!!!")
+
+        #do nothing
         else:
-            self.reward = self.reward - 1
+            self.reward = self.reward
         print("Current Reward: " + str(self.reward))
 
 
