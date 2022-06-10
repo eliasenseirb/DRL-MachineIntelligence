@@ -2,6 +2,8 @@ import pygame as pg
 import random
 from collections import defaultdict
 import time
+import numpy as np
+
 
 #Hallway problem
 # ***********
@@ -18,14 +20,17 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (234, 221, 0)
 
-WITDH = 2200
-HEIGHT = 400
+WITDH = 1100
+HEIGHT = 200
 #modifies speed of the game
-FPS = 20
+FPS = 60
+
+SIZEX = 11
+SIZEY = 2
 
 SQUARE = HEIGHT / 2
 
-
+TOTAL = 1000
 
 
 
@@ -49,39 +54,99 @@ def main():
     #initilaize State
     state = State()
     observation = Observation()
-    running = True
+  #  running = True
     clock = pg.time.Clock()
 
     #Main code start:
 
-    while running:
-        #draw hallway
-        Draw.draw_hallway(screen, Hallway)
-        # event handling, gets all event from the event queue
-        for event in pg.event.get():
+    #define training parameters
+    epsilon = 0.9 #the percentage of time when we should take the best action (instead of a random action)
+    discount_factor = 0.9 #discount factor for future rewards
+    learning_rate = 0.9 #the rate at which the AI agent should learn
+
+    #run through 1000 training episodes
+    for episode in range(TOTAL):
+        #get the starting location for this episode
+        row_index, column_index = agent.position[1], agent.position[0]
+
+        #continue taking actions (i.e., moving) until we reach a terminal state
+        #(i.e., until we reach the item packaging area or crash into an item storage location)
+        while not reward.is_terminal_state(row_index, column_index):
+          agent.position[0] = column_index
+          agent.position[1] = row_index
+            
+          #draw hallway
+          Draw.draw_hallway(screen, Hallway)
+         
+          #draw agent
+          Draw.draw_agent(screen, agent)
+          #print("I am in state: " + str(state.return_state(agent)))
+          #print("I observe from the environment: " + str(observation.return_observation(state.return_state(agent))))
+          for event in pg.event.get():
             if event.type == pg.QUIT:
                 running = False
-        #draw agent
-        Draw.draw_agent(screen, agent)
-        print("I am in state: " + str(state.return_state(agent)))
-        print("I observe from the environment: " + str(observation.return_observation(state.return_state(agent))))
-        #perfom action
-        Agent.random_action(agent)
-        #get reward
-        reward.get_reward(agent)
-        #resetting the agent
-        if reward_received:
-            Draw.draw_hallway(screen, Hallway)
-            Draw.draw_agent(screen, agent)
-            time.sleep(1)
-            agent = Agent()
-            print("Resetting the agent")
-            reward_received = False
+                
+         # print("x = " + str(column_index))
+          #print("y = " + str(row_index))
+          
+            #choose which action to take (i.e., where to move next)
+          action_index = agent.get_next_action(row_index, column_index, epsilon)
+
+          #perform the chosen action, and transition to the next state (i.e., move to the next location)
+          old_row_index, old_column_index = row_index, column_index #store the old row and column indexes
+          row_index, column_index = agent.get_next_location(row_index, column_index, action_index, reward)
+          
+          
+          #receive the reward for moving to the new state, and calculate the temporal difference
+          rewardvar = reward.rewards[row_index, column_index]
+          old_q_value = agent.q_values[old_row_index, old_column_index, action_index]
+          temporal_difference = rewardvar + (discount_factor * np.max(agent.q_values[row_index, column_index])) - old_q_value
+
+          #update the Q-value for the previous state and action pair
+          new_q_value = old_q_value + (learning_rate * temporal_difference)
+          agent.q_values[old_row_index, old_column_index, action_index] = new_q_value
+
+          if reward_received:
+              Draw.draw_hallway(screen, Hallway)
+              Draw.draw_agent(screen, agent)
+              time.sleep(0.001)
+              agent = Agent()
+              print("reward : " + str(episode) + "/" + str(TOTAL))
+             # print("Resetting the agent")
+              reward_received = False
+              
+          clock.tick(FPS)
+    print('Training complete!')        
 
 
-        clock.tick(FPS)
+    # while running:
+    #     #draw hallway
+    #     Draw.draw_hallway(screen, Hallway)
+    #     # event handling, gets all event from the event queue
+    #     for event in pg.event.get():
+    #         if event.type == pg.QUIT:
+    #             running = False
+    #     #draw agent
+    #     Draw.draw_agent(screen, agent)
+    #     print("I am in state: " + str(state.return_state(agent)))
+    #     print("I observe from the environment: " + str(observation.return_observation(state.return_state(agent))))
+    #     #perfom action
+    #     Agent.random_action(agent)
+    #     #get reward
+    #     reward.get_reward(agent)
+    #     #resetting the agent
+    #     if reward_received:
+    #         Draw.draw_hallway(screen, Hallway)
+    #         Draw.draw_agent(screen, agent)
+    #         time.sleep(1)
+    #         agent = Agent()
+    #         print("Resetting the agent")
+    #         reward_received = False
 
-    #Main code end
+
+    #     clock.tick(FPS)
+
+    # #Main code end
 
 
 
@@ -190,6 +255,25 @@ class Action:
             agent.position[2] = agent.position[2] + 180
         else:
             agent.position[2] = agent.position[2] - 180
+            
+        #Define a function that will get the shortest path between any location within the warehouse that 
+        #the robot is allowed to travel and the item packaging location.
+    def get_shortest_path(start_row_index, start_column_index):
+            #return immediately if this is an invalid starting location
+        if Reward.is_terminal_state(start_row_index, start_column_index):
+            return []
+        else: #if this is a 'legal' starting location
+            current_row_index, current_column_index = start_row_index, start_column_index
+            shortest_path = []
+            shortest_path.append([current_row_index, current_column_index])
+            #continue moving along the path until we reach the goal (i.e., the item packaging location)
+            while not Reward.is_terminal_state(current_row_index, current_column_index):
+                #get the best action to take
+                action_index = Agent.get_next_action(current_row_index, current_column_index, 1.)
+                #move to the next location on the path, and add the new location to the list
+                current_row_index, current_column_index = Agent.get_next_location(current_row_index, current_column_index, action_index)
+                shortest_path.append([current_row_index, current_column_index])
+            return shortest_path
 
 
 
@@ -202,6 +286,10 @@ class Agent:
         #random starting position/state
         self.state = random.randint(1, 56)
         self.position = state.return_position(self.state)
+        self.q_values = np.zeros((SIZEY, SIZEX, 4))
+        self.actions = ['up', 'right', 'down', 'left']
+
+
 
     #performs random actions
     def random_action(agent):
@@ -217,25 +305,85 @@ class Agent:
             Action.turn_left(agent)
         else:
             Action.turn_around(agent)
+            
+    #define an epsilon greedy algorithm that will choose which action to take next (i.e., where to move next)
+    def get_next_action(self, current_row_index, current_column_index, epsilon):
+         #if a randomly chosen value between 0 and 1 is less than epsilon, 
+         #then choose the most promising value from the Q-table for this state.
+        if np.random.random() < epsilon:
+            return np.argmax(self.q_values[current_row_index, current_column_index])
+        else: #choose a random action
+            return np.random.randint(4)
+        
+    
+    
+    #define a function that will get the next location based on the chosen action
+    def get_next_location(self, current_row_index, current_column_index, action_index, reward):
+        new_row_index = current_row_index
+        new_column_index = current_column_index
+        #print("_____________________")
+        if self.actions[action_index] == 'up' and current_row_index > 0:
+            new_row_index -= 1
+            #print("north")
+        elif self.actions[action_index] == 'right' and current_column_index < SIZEX - 1:
+            self.position[2] = 270
+            new_column_index += 1
+            #print("east")
+        elif self.actions[action_index] == 'down' and current_row_index < SIZEY - 1:
+            if reward.rewards[current_row_index+1,current_column_index] != -100: 
+                self.position[2] = 180
+                new_row_index += 1
+             #   print("south")
+            #else:
+              #  print("hit a wall")
+        elif self.actions[action_index] == 'left' and current_column_index > 0:
+            self.position[2] = 90
+            new_column_index -= 1
+            #print("west")
+        return new_row_index, new_column_index
 
 #if the agent is in the goal state/position
 #he will recieve +1 reward else -1
 class Reward():
     def __init__(self):
-        self.reward = 0
-
-    def get_reward(self, agent):
-        #agent is at the goal state
-        if agent.position[0] == 8 and agent.position[1] ==1:
-            self.reward = self.reward + 1
-            global reward_received
+        #self.reward = 0
+        
+        #Create a 2D numpy array to hold the rewards for each state. 
+        #The array contains 11 rows and 11 columns (to match the shape of the environment), and each value is initialized to -100.
+        self.rewards = np.full((SIZEY, SIZEX), -1.)
+        self.rewards[1, 8] = 100. #set the reward for the packaging area (i.e., the goal) to 100
+        for i in range(2):
+            self.rewards[1,i] = -100
+            self.rewards[1,SIZEX-i-1] = -100
+        self.rewards[1,3] = -100
+        self.rewards[1,5] = -100
+        self.rewards[1,7] = -100
+        print(self.rewards)
+        
+    #define a function that determines if the specified location is a terminal state
+    def is_terminal_state(self, current_row_index, current_column_index):
+        global reward_received
+        #if the reward for this location is -1, then it is not a terminal state (i.e., it is a 'white square')
+        if self.rewards[current_row_index, current_column_index] == 100.:
             reward_received = True
-            print("GOAL!!!!")
+            return True    
+        else: return False
 
-        #do nothing
-        else:
-            self.reward = self.reward
-        print("Current Reward: " + str(self.reward))
+    
+        
+        
+    # def get_reward(self, agent):
+    #     #agent is at the goal state
+    #     if agent.position[0] == 8 and agent.position[1] ==1:
+    #         self.reward = self.reward + 1
+    #         global reward_received
+    #         reward_received = True
+    #         print("GOAL!!!!")
+
+    #     #do nothing
+    #     else:
+    #         self.reward = self.reward
+    #     print("Current Reward: " + str(self.reward))
 
 
 class State():
