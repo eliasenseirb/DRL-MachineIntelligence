@@ -60,12 +60,20 @@ def main():
     #Main code start:
 
     #define training parameters
-    epsilon = 0.9 #the percentage of time when we should take the best action (instead of a random action)
+    epsilon = 0.5 #the percentage of time when we should take the best action (instead of a random action)
     discount_factor = 0.9 #discount factor for future rewards
     learning_rate = 0.9 #the rate at which the AI agent should learn
 
     #run through 1000 training episodes
     for episode in range(TOTAL):
+        if episode == 100:
+            epsilon = 0.7
+        if episode == 300:
+           epsilon = 0.8
+        if episode == 500:
+            epsilon = 0.9
+        if episode == 900:
+            epsilon = 0.99
         #get the starting location for this episode
         row_index, column_index = agent.position[1], agent.position[0]
 
@@ -115,6 +123,7 @@ def main():
              # print("Resetting the agent")
               reward_received = False
               
+          #time.sleep(0.05)
           clock.tick(FPS)
     print('Training complete!')        
 
@@ -323,12 +332,14 @@ class Agent:
         new_column_index = current_column_index
         #print("_____________________")
         if self.actions[action_index] == 'up' and current_row_index > 0:
-            new_row_index -= 1
-            #print("north")
+            if reward.rewards[current_row_index-1,current_column_index] != -100: 
+                new_row_index -= 1
+                #print("north")
         elif self.actions[action_index] == 'right' and current_column_index < SIZEX - 1:
-            self.position[2] = 270
-            new_column_index += 1
-            #print("east")
+            if reward.rewards[current_row_index,current_column_index+1] != -100: 
+                self.position[2] = 270
+                new_column_index += 1
+                #print("east")
         elif self.actions[action_index] == 'down' and current_row_index < SIZEY - 1:
             if reward.rewards[current_row_index+1,current_column_index] != -100: 
                 self.position[2] = 180
@@ -337,8 +348,9 @@ class Agent:
             #else:
               #  print("hit a wall")
         elif self.actions[action_index] == 'left' and current_column_index > 0:
-            self.position[2] = 90
-            new_column_index -= 1
+            if reward.rewards[current_row_index,current_column_index-1] != -100: 
+                self.position[2] = 90
+                new_column_index -= 1
             #print("west")
         return new_row_index, new_column_index
 
@@ -351,20 +363,25 @@ class Reward():
         #Create a 2D numpy array to hold the rewards for each state. 
         #The array contains 11 rows and 11 columns (to match the shape of the environment), and each value is initialized to -100.
         self.rewards = np.full((SIZEY, SIZEX), -1.)
-        self.rewards[1, 8] = 100. #set the reward for the packaging area (i.e., the goal) to 100
+        self.rewards[1, 8] = 1000. #set the reward for the packaging area (i.e., the goal) to 100
         for i in range(2):
             self.rewards[1,i] = -100
             self.rewards[1,SIZEX-i-1] = -100
         self.rewards[1,3] = -100
         self.rewards[1,5] = -100
         self.rewards[1,7] = -100
+        
+        #rewards of the checkpoint
+        #self.rewards[1,2] = 0
+        #self.rewards[1,4] = 1
+        #self.rewards[1,6] = 2
         print(self.rewards)
         
     #define a function that determines if the specified location is a terminal state
     def is_terminal_state(self, current_row_index, current_column_index):
         global reward_received
         #if the reward for this location is -1, then it is not a terminal state (i.e., it is a 'white square')
-        if self.rewards[current_row_index, current_column_index] == 100.:
+        if self.rewards[current_row_index, current_column_index] == 1000.:
             reward_received = True
             return True    
         else: return False
