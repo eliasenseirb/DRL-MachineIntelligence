@@ -2,7 +2,7 @@
 Deep Reinforcement Learning (DRL) project for the Machine Intelligence course
 
 # Installation
-install docker
+install docker  
 docker pull osrf/ros:melodic-desktop-full
 
 # Usage
