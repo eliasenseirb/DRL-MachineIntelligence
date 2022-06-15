@@ -5,5 +5,5 @@ Deep Reinforcement Learning (DRL) project for the Machine Intelligence course
 install docker
 docker pull osrf/ros:melodic-desktop-full
 
-#Usage
+# Usage
 docker run -it -v /home/$USER/{path to project}:/mnt/mydata 74c6b66394e1
