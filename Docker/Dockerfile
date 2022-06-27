@@ -132,7 +132,6 @@ RUN pip install gym
 RUN apt-get install python-skimage -y
 RUN pip install h5py 
 RUN pip install tensorflow-gpu==1.12
-RUN pip uninstall numpy
 RUN pip install numpy==1.15.0
 RUN pip install keras 
 
