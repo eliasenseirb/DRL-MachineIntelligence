@@ -10,13 +10,15 @@ else
     echo "=========================" 
     echo "=nvidia docker installed="
     echo "========================="
-    TAG="e38fa2c4e6ad"    
     docker run -it \
+    --privileged \
     --gpus all \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
     -e DISPLAY=$DISPLAY \
     -v $HOME/.Xauthority:/home/$(id -un)/.Xauthority \
     -e XAUTHORITY=/home/$(id -un)/.Xauthority \
+    --net host \
     -e ROS_IP=127.0.0.1 \
-    $TAG
+    -e GAZEBO_MASTER_URI=http://localhost:13853 \
+    drl-ml:latest
 fi
