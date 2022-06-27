@@ -17,4 +17,4 @@ docker image ls
 
 change tag inside run.sh file to new image id
 
-./ run.sh
+./run.sh
