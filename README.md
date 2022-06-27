@@ -3,7 +3,9 @@ Deep Reinforcement Learning (DRL) project for the Machine Intelligence course
 
 # Installation
 install docker  
+
 cd Docker
+
 docker build .
 
 
