@@ -18,6 +18,11 @@ register(
     # More arguments here
 )
 register(
+    id='GazeboCafeTurtlebotLidar-v0',
+    entry_point='gym_gazebo.envs.turtlebot:GazeboCafeTurtlebotLidarEnv',
+    # More arguments here
+)
+register(
     id='GazeboCircuit2TurtlebotLidar-v0',
     entry_point='gym_gazebo.envs.turtlebot:GazeboCircuit2TurtlebotLidarEnv',
     # More arguments here

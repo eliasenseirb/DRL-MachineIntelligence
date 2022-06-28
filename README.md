@@ -65,6 +65,17 @@ export GAZEBO_MASTER_URI=http://localhost:XXXXXX #use tbe URI from the initializ
 
 gzclient
 ```
+
+# Cafe Environment
+
+```
+cd ../../../examples/turtlebot
+
+python cafe_turtlebot_lidar_qlearn.py
+```
+
+Q. How to create own environment?
+A. See this commit
   
 # To do
   

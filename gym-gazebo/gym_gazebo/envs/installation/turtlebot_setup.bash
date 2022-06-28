@@ -21,6 +21,11 @@ if [ -z "$GYM_GAZEBO_WORLD_CIRCUIT" ]; then
 else
   bash -c 'sed "s,GYM_GAZEBO_WORLD_CIRCUIT=[^;]*,'GYM_GAZEBO_WORLD_CIRCUIT=`pwd`/../assets/worlds/circuit.world'," -i ~/.bashrc'
 fi
+if [ -z "$GYM_GAZEBO_WORLD_CAFE" ]; then
+  bash -c 'echo "export GYM_GAZEBO_WORLD_CAFE="`pwd`/../assets/worlds/cafe.world >> ~/.bashrc'
+else
+  bash -c 'sed "s,GYM_GAZEBO_WORLD_CAFE=[^;]*,'GYM_GAZEBO_WORLD_CAFE=`pwd`/../assets/worlds/cafe.world'," -i ~/.bashrc'
+fi
 if [ -z "$GYM_GAZEBO_WORLD_CIRCUIT2" ]; then
   bash -c 'echo "export GYM_GAZEBO_WORLD_CIRCUIT2="`pwd`/../assets/worlds/circuit2.world >> ~/.bashrc'
 else
