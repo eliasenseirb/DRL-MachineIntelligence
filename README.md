@@ -44,7 +44,7 @@ python circuit2_turtlebot_lidar_qlearn.py
 
 docker ps
 
-open new terminal window with: docker exec -it <<container id>> bash
+open new terminal window with: docker exec -it %container id% bash
   
 # To do
   
