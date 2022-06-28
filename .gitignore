@@ -128,3 +128,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# catkin workspace
+/gym-gazebo/gym_gazebo/envs/installation/catkin_ws

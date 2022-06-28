@@ -140,4 +140,3 @@ WORKDIR /root/gym-gazebo
 RUN pip install -e .
 
 WORKDIR /root/gym-gazebo/gym_gazebo/envs/installation
-RUN bash setup_melodic.bash

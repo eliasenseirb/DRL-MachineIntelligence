@@ -14,11 +14,11 @@ else
     --privileged \
     --gpus all \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v "/$(pwd)/../gym-gazebo:/root/gym-gazebo" \
     -e DISPLAY=$DISPLAY \
     -v $HOME/.Xauthority:/home/$(id -un)/.Xauthority \
     -e XAUTHORITY=/home/$(id -un)/.Xauthority \
     --net host \
     -e ROS_IP=127.0.0.1 \
-    -e GAZEBO_MASTER_URI=http://localhost:13853 \
     drl-ml:latest
 fi
