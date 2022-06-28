@@ -54,4 +54,4 @@ open new terminal window with docker exec -it <container name> bash
   
 # Path to worlds
   
-  gym-gazebo/gym_gazebo_envs_assets_worlds
+  gym-gazebo/gym_gazebo/envs/assets/worlds
