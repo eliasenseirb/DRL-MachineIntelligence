@@ -45,6 +45,16 @@ python circuit2_turtlebot_lidar_qlearn.py
 docker ps
 
 open new terminal window with: docker exec -it %container id% bash
+
+# Connecting Gazebo
+
+```
+source setup_turtlebot.bash
+
+export GAZEBO_MASTER_URI=http://localhost:XXXXXX #use tbe URI from the initialization
+
+gzclient
+```
   
 # To do
   
