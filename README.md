@@ -48,4 +48,6 @@ open new terminal window with docker exec -it <container name> bash
   
   examples/turtlebot/circuit2_turtlebot_lidar_qlearn.py 
   
-# 1. Question How is the simulation environment loaded in and how can we change it to ours?
+# Path to worlds
+  
+  gym-gazebo/gym_gazebo_envs_assets_worlds
