@@ -75,7 +75,8 @@ python cafe_turtlebot_lidar_qlearn.py
 ```
 
 Q. How to create own environment?
-A. See this commit
+
+A. See [this commit](https://github.com/eliasenseirb/DRL-MachineIntelligence/commit/527b512f4c2a17dfa9b10829542bcb381662ad48)
   
 # To do
   
