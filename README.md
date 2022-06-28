@@ -13,6 +13,8 @@ install docker
 ```
 cd Docker
 
+chmod +x buld.sh
+
 ./build.sh
 ```
 
@@ -20,6 +22,8 @@ cd Docker
 
 ```shell
 cd Docker
+
+chmod +x run.sh
 
 ./run.sh
 ```
