@@ -47,6 +47,7 @@ docker ps
 open new terminal window with: docker exec -it %container id% bash
 
 # Connecting Gazebo
+in a new terminal
 
 ```
 source setup_turtlebot.bash
