@@ -1,6 +1,12 @@
 # DRL-MachineIntelligence
 Deep Reinforcement Learning (DRL) project for the Machine Intelligence course
 
+#Gym Documentation
+https://www.gymlibrary.ml/
+
+#Gazebo Gym Paper
+https://arxiv.org/pdf/1608.05742.pdf%C3%AF%C2%BC%E2%80%B0
+
 # Installation
 install docker  
 
