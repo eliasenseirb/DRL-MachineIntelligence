@@ -13,7 +13,7 @@ install docker
 ```shell
 cd Docker
 
-chmod +x buld.sh
+chmod +x build.sh
 
 ./build.sh
 ```
@@ -71,6 +71,8 @@ gzclient
 ```
 cd ../../../examples/turtlebot
 
+export GAZEBO_MODEL_DATABASE_URI=http://models.gazebosim.org/
+
 python cafe_turtlebot_lidar_qlearn.py
 ```
 
@@ -78,14 +80,6 @@ Q. How to create own environment?
 
 A. See [this commit](https://github.com/eliasenseirb/DRL-MachineIntelligence/commit/527b512f4c2a17dfa9b10829542bcb381662ad48)
   
-# To do
+
   
-  understanding the code: 
-  
-  gym_gazebo/envs/turlebot/gazebo.circuit2c_turtlebot_lidar.py
-  
-  examples/turtlebot/circuit2_turtlebot_lidar_qlearn.py 
-  
-# Path to worlds
-  
-  gym-gazebo/gym_gazebo/envs/assets/worlds
+
