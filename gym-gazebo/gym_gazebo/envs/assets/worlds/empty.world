@@ -6,9 +6,9 @@
       <uri>model://sun</uri>
     </include>
     <!-- A ground plane -->
-    <include>
+    <!-- <include>
       <uri>model://ground_plane</uri>
-    </include>
+    </include> -->
     <!-- Own physics settings to speed up simulation -->
     <physics type='ode'>
       <max_step_size>0.01</max_step_size>
