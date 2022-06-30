@@ -1,4 +1,6 @@
 import random
+import json
+import ast
 
 class QLearn:
     def __init__(self, actions, epsilon, alpha, gamma):
@@ -49,3 +51,41 @@ class QLearn:
     def learn(self, state1, action1, reward, state2):
         maxqnew = max([self.getQ(state2, a) for a in self.actions])
         self.learnQ(state1, action1, reward, reward + self.gamma*maxqnew)
+
+    # only loading q, hyperparameters are not saved 
+    def saveModel(self, savedir, iteration):
+        print("SAVING MODEL.........................................................................")
+        name = "model" + str(iteration) + ".json"
+        print(savedir)
+        print(name)
+        f = open(savedir + "/" + name, "w")
+        f.write(str(self.q))
+        f.close()
+        print("SAVING HYPERPARAMETERS.........................................................................")
+        name_hyper = "Hyperparameters" + str(iteration) + ".json"
+        f = open(savedir + "/" + name_hyper, "w")
+        f.write(str(self.epsilon))
+        f.write("\n" + str(self.alpha))
+        f.write("\n" +str(self.gamma))
+        f.close()
+
+        
+
+
+    # only loading q, hyperparameters are not saved 
+    def loadModel(self, savedir, name):
+        print("LOADING MODEL.........................................................................")
+        print(savedir + "/" + name)
+        f = open(savedir + "/" + name, "r")
+        self.q = ast.literal_eval(f.read())
+        print(self.q)
+        f.close()
+        print("LOADING HYPERPARAMETERS.........................................................................")
+        name_hyper = "Hyperparameters" + name[5:8] + ".json"
+        f = open(savedir + "/" + name_hyper, "r")
+        Lines = f.readlines()
+        self.epsilon = float(Lines[0])
+        self.alpha = float(Lines[1])
+        self.gamma = float(Lines[2])
+        print(self.q)
+        f.close()

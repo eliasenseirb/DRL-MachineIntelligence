@@ -26,7 +26,6 @@ if __name__ == '__main__':
     env = gym.make('GazeboCircuit2TurtlebotLidar-v0')
     outdir = '/root/gym-gazebo/output/circuit2'
     modeldir = '/root/gym-gazebo/output/model/circuit2'
-    print(outdir)
     env = gym.wrappers.Monitor(env, outdir, force=True)
     plotter = liveplot.LivePlot(outdir)
 
@@ -34,13 +33,26 @@ if __name__ == '__main__':
 
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
                     alpha=0.2, gamma=0.8, epsilon=0.9)
+
+
+    LOAD_MODEL = False
+    START_POINT = 0
+    if LOAD_MODEL:
+        #dont comment this out use LOAD_MODEL
+        model_name = "model400.json"
+        #dont change the line below
+        qlearn.loadModel(modeldir, model_name) 
+        START_POINT = int(model_name[5:8])
+
     
+
+
     initial_epsilon = qlearn.epsilon
 
     epsilon_discount = 0.9986
 
     start_time = time.time()
-    total_episodes = 10000
+    total_episodes = 100000
     highest_reward = 0
 
     for x in range(total_episodes):
@@ -56,7 +68,7 @@ if __name__ == '__main__':
         #render() #defined above, not env.render()
 
         state = ''.join(map(str, observation))
-        for i in range(1500):
+        for i in range(3500):
 
             # Pick an action based on the current state
             action = qlearn.chooseAction(state)
@@ -66,7 +78,6 @@ if __name__ == '__main__':
 
             if highest_reward < cumulated_reward:
                 highest_reward = cumulated_reward
-
             nextState = ''.join(map(str, observation))
             qlearn.learn(state, action, reward, nextState)
 
@@ -78,8 +89,11 @@ if __name__ == '__main__':
                 last_time_steps = numpy.append(last_time_steps, [int(i + 1)])
                 break
 
-        if x%100==0:
-            plotter.plot(env)
+        # if x%100==0:
+        #     plotter.plot(env)
+
+        if x%200==0:
+            qlearn.saveModel(modeldir,x + START_POINT)
 
         m, s = divmod(int(time.time() - start_time), 60)
         h, m = divmod(m, 60)
