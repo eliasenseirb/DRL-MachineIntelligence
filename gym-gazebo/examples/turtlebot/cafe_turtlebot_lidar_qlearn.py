@@ -24,7 +24,8 @@ if __name__ == '__main__':
     env = gym.make('GazeboCafeTurtlebotLidar-v0')
 
 
-    outdir = '/tmp/gazebo_gym_experiments'
+    outdir = '/root/gym-gazebo/output/cafe'
+    print(outdir)
     env = gym.wrappers.Monitor(env, outdir, force=True)
 
     plotter = liveplot.LivePlot(outdir)

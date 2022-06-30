@@ -10,6 +10,7 @@ import time
 import qlearn
 import liveplot
 
+
 def render():
     render_skip = 0 #Skip first X episodes.
     render_interval = 50 #Show render Every Y episodes.
@@ -23,8 +24,9 @@ def render():
 if __name__ == '__main__':
 
     env = gym.make('GazeboCircuit2TurtlebotLidar-v0')
-
-    outdir = '/tmp/gazebo_gym_experiments'
+    outdir = '/root/gym-gazebo/output/circuit2'
+    modeldir = '/root/gym-gazebo/output/model/circuit2'
+    print(outdir)
     env = gym.wrappers.Monitor(env, outdir, force=True)
     plotter = liveplot.LivePlot(outdir)
 
@@ -32,7 +34,7 @@ if __name__ == '__main__':
 
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
                     alpha=0.2, gamma=0.8, epsilon=0.9)
-
+    
     initial_epsilon = qlearn.epsilon
 
     epsilon_discount = 0.9986
@@ -54,12 +56,10 @@ if __name__ == '__main__':
         #render() #defined above, not env.render()
 
         state = ''.join(map(str, observation))
-
         for i in range(1500):
 
             # Pick an action based on the current state
             action = qlearn.chooseAction(state)
-
             # Execute the action and get feedback
             observation, reward, done, info = env.step(action)
             cumulated_reward += reward
@@ -68,11 +68,10 @@ if __name__ == '__main__':
                 highest_reward = cumulated_reward
 
             nextState = ''.join(map(str, observation))
-
             qlearn.learn(state, action, reward, nextState)
 
-            env._flush(force=True)
 
+            env._flush(force=True)
             if not(done):
                 state = nextState
             else:
