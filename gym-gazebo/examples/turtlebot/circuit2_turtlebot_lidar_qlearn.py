@@ -43,7 +43,7 @@ if __name__ == '__main__':
         #dont change the line below
         qlearn.loadModel(modeldir, model_name) 
         START_POINT = int(model_name[5:8])
-        qlearn.epsilon = 0.05
+
 
     
 

@@ -57,7 +57,7 @@ if __name__ == '__main__':
 
         state = ''.join(map(str, observation))
 
-        for i in range(500):
+        for i in range(5000):
 
             # Pick an action based on the current state
             action = qlearn.chooseAction(state)

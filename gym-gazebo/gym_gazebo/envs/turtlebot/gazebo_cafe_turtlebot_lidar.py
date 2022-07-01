@@ -42,7 +42,10 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
                 else:
                     discretized_ranges.append(int(data.ranges[i]))
             if (min_range > data.ranges[i] > 0):
-                done = True
+                #these sensor points are always below the minimum range
+                if i != 0 and i != 19:
+                    done = True
+                    print("min range: " + str(min_range) + " > data.ranges[i] " + str(data.ranges[i]) + " range number [i]: " + str(i))
         return discretized_ranges,done
 
     def _seed(self, seed=None):
