@@ -73,6 +73,8 @@ cd ../../../examples/turtlebot
 
 export GAZEBO_MODEL_DATABASE_URI=http://models.gazebosim.org/
 
+export ROBOT_INITIAL_POSE="-x 0.0 -y 0.0 -z 0.5 -R 0 -P 0 -Y 0.0"
+
 python cafe_turtlebot_lidar_qlearn.py
 ```
 
