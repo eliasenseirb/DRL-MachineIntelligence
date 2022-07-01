@@ -81,7 +81,8 @@ class QLearn:
         print(self.q)
         f.close()
         print("LOADING HYPERPARAMETERS.........................................................................")
-        name_hyper = "Hyperparameters" + name[5:8] + ".json"
+        name_hyper = "Hyperparameters" + name[5:]
+        print(name_hyper)
         f = open(savedir + "/" + name_hyper, "r")
         Lines = f.readlines()
         self.epsilon = float(Lines[0])

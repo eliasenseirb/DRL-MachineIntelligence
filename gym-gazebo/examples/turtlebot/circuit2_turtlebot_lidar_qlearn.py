@@ -35,14 +35,15 @@ if __name__ == '__main__':
                     alpha=0.2, gamma=0.8, epsilon=0.9)
 
 
-    LOAD_MODEL = False
+    LOAD_MODEL = True
     START_POINT = 0
     if LOAD_MODEL:
         #dont comment this out use LOAD_MODEL
-        model_name = "model400.json"
+        model_name = "model2000.json"
         #dont change the line below
         qlearn.loadModel(modeldir, model_name) 
         START_POINT = int(model_name[5:8])
+        qlearn.epsilon = 0.05
 
     
 
@@ -92,8 +93,8 @@ if __name__ == '__main__':
         # if x%100==0:
         #     plotter.plot(env)
 
-        if x%200==0:
-            qlearn.saveModel(modeldir,x + START_POINT)
+        # if x%200==0:
+        #     qlearn.saveModel(modeldir,x + START_POINT)
 
         m, s = divmod(int(time.time() - start_time), 60)
         h, m = divmod(m, 60)
