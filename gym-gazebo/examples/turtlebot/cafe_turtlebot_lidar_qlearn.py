@@ -23,8 +23,8 @@ if __name__ == '__main__':
 
     env = gym.make('GazeboCafeTurtlebotLidar-v0')
 
-
     outdir = '/root/gym-gazebo/output/cafe'
+    modeldir = '/root/gym-gazebo/output/model/cafe'
     print(outdir)
     env = gym.wrappers.Monitor(env, outdir, force=True)
 
@@ -35,9 +35,19 @@ if __name__ == '__main__':
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
                     alpha=0.1, gamma=0.8, epsilon=0.9)
 
+    LOAD_MODEL = False
+    START_POINT = 0
+    if LOAD_MODEL:
+        #dont comment this out use LOAD_MODEL
+        model_name = "model2000.json"
+        #dont change the line below
+        qlearn.loadModel(modeldir, model_name) 
+        START_POINT = int(model_name[5:8])
+    
+    
     initial_epsilon = qlearn.epsilon
 
-    epsilon_discount = 0.999 # 1098 eps to reach 0.1
+    epsilon_discount = 0.9994 
 
     start_time = time.time()
     total_episodes = 10000
@@ -81,8 +91,11 @@ if __name__ == '__main__':
                 last_time_steps = numpy.append(last_time_steps, [int(i + 1)])
                 break
 
-        if x % 100 == 0:
-            plotter.plot(env)
+        # if x % 100 == 0:
+        #     plotter.plot(env)
+
+        if x%200==0:
+            qlearn.saveModel(modeldir,x + START_POINT)
 
         m, s = divmod(int(time.time() - start_time), 60)
         h, m = divmod(m, 60)

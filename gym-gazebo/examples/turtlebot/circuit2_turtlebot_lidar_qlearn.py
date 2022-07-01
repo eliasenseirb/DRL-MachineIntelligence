@@ -6,7 +6,6 @@ import time
 import numpy
 import random
 import time
-
 import qlearn
 import liveplot
 

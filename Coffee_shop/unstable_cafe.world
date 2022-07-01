@@ -95,10 +95,6 @@
         <animation_factor>5.1</animation_factor>
         <!-- Usage: Modify the set of models that the vector field should
              ignore when moving the actor -->
-        <ignore_obstacles>
-          <model>cafe</model>
-          <model>ground_plane</model>
-        </ignore_obstacles>
       </plugin>
     </actor>
 
@@ -118,10 +114,6 @@
         <target_weight>1.15</target_weight>
         <obstacle_weight>1.8</obstacle_weight>
         <animation_factor>5.1</animation_factor>
-        <ignore_obstacles>
-          <model>cafe</model>
-          <model>ground_plane</model>
-        </ignore_obstacles>
       </plugin>
     </actor>
 
