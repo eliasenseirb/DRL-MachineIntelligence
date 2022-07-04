@@ -39,14 +39,11 @@ Refer to: https://github.com/erlerobot/gym-gazebo#usage (Build and install gym-g
 
 # Tutorial
 
-(After building the ROS package by `bash setup_melodic.bash`)
-
 ```shell
-cd /root/gym-gazebo/gym_gazebo/envs/installation
+bash setup_melodic.bash
+bash setup_turtlebot.bash
 
-bash turtlebot_setup.bash
-
-cd ../../../examples/turtlebot
+cd_src
 
 python circuit2_turtlebot_lidar_qlearn.py
 ```

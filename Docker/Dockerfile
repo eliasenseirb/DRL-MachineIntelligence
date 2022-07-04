@@ -139,4 +139,5 @@ RUN git clone https://github.com/erlerobot/gym-gazebo.git
 WORKDIR /root/gym-gazebo
 RUN pip install -e .
 
+RUN echo "source /ros_setting.sh">> ~/.bashrc
 WORKDIR /root/gym-gazebo/gym_gazebo/envs/installation

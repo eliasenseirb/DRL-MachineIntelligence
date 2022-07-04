@@ -1,4 +1,5 @@
 #!/bin/bash
+
 xhost +local:user
 nvidia-docker &> /dev/null
 if [ $? -ne 0 ]; then
@@ -13,7 +14,10 @@ else
     docker run -it \
     --privileged \
     --gpus all \
+    --name drl_ml \
+    --rm \
     -v /tmp/.X11-unix:/tmp/.X11-unix \
+    -v "/$(pwd)/ros_setting.sh:/ros_setting.sh" \
     -v "/$(pwd)/../gym-gazebo:/root/gym-gazebo" \
     -e DISPLAY=$DISPLAY \
     -v $HOME/.Xauthority:/home/$(id -un)/.Xauthority \
