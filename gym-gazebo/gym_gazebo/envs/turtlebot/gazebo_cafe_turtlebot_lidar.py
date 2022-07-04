@@ -10,6 +10,7 @@ from geometry_msgs.msg import Twist
 from std_srvs.srv import Empty
 
 from sensor_msgs.msg import LaserScan
+from gazebo_msgs.msg import ModelStates
 
 from gym.utils import seeding
 
@@ -62,7 +63,7 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
 
         if action == 0: #FORWARD
             vel_cmd = Twist()
-            vel_cmd.linear.x = 0.6
+            vel_cmd.linear.x = 1.0 # 0.6
             vel_cmd.angular.z = 0.0
             self.vel_pub.publish(vel_cmd)
         elif action == 1: #LEFT
@@ -83,6 +84,16 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
             except:
                 pass
 
+        obj_pos = None
+        while obj_pos is None:
+            try:
+                obj_pos = rospy.wait_for_message('/gazebo/model_states', ModelStates, timeout=5)
+            except:
+                pass
+        robot_pos = obj_pos.pose[-1].position
+        robot_rot = obj_pos.pose[-1].orientation
+        # print(robot_pos)
+        
         rospy.wait_for_service('/gazebo/pause_physics')
         try:
             #resp_pause = pause.call()

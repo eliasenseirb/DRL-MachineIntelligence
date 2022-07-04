@@ -131,3 +131,4 @@ dmypy.json
 
 # catkin workspace
 /gym-gazebo/gym_gazebo/envs/installation/catkin_ws
+.vscode

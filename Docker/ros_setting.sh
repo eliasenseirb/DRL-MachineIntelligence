@@ -7,6 +7,7 @@ cdls()
 }
 alias cd="cdls"
 alias cd_src="cd /root/gym-gazebo/examples/turtlebot"
+alias cd_installation="cd /root/gym-gazebo/gym_gazebo/envs/installation"
 
 ## environmental variables
 export GAZEBO_MODEL_DATABASE_URI=http://models.gazebosim.org/

@@ -28,6 +28,11 @@ class GazeboEnv(gym.Env):
         os.environ["GAZEBO_MASTER_URI"] = "http://localhost:"+self.port_gazebo
         #
         # self.ros_master_uri = os.environ["ROS_MASTER_URI"];
+        
+        s = '#!/bin/bash\nexport ROS_MASTER_URI=http://localhost:'+self.port+'\nexport GAZEBO_MASTER_URI=http://localhost:'+self.port_gazebo+'\n'
+        setup_export_path = "/root/gym-gazebo/gym_gazebo/envs/installation/setup_display.sh"
+        with open(setup_export_path, mode='w') as f:
+            f.write(s)
 
         print("ROS_MASTER_URI=http://localhost:"+self.port + "\n")
         print("GAZEBO_MASTER_URI=http://localhost:"+self.port_gazebo + "\n")
