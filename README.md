@@ -1,6 +1,8 @@
 # DRL-MachineIntelligence
 Deep Reinforcement Learning (DRL) project for the Machine Intelligence course
 
+![simulation_image](https://raw.githubusercontent.com/eliasenseirb/DRL-MachineIntelligence/main/Images/simulation_image.png)
+
 ## Assumed Environment
 - Ubuntu 20.04
 
