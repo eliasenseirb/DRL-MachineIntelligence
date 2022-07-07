@@ -111,7 +111,7 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
         
         ## arrive goal
         if math.hypot(self.goal["x"]-self.robot_pos.x, self.goal["y"]-self.robot_pos.y) < 0.2:
-            reward = 500
+            reward = 100
             done = True
             return state, reward, done, {}
         
@@ -130,15 +130,19 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
             vel_angle = robot_yaw - 1.0 * 0.1
             v = 0.2
         pos_to_goal_vec_angle = math.atan2(self.goal["y"]-self.robot_pos.y, self.goal["x"]-self.robot_pos.x)
+        distance = math.sqrt((self.goal["y"]-self.robot_pos.y)**2 + (self.goal["x"]-self.robot_pos.x)**2)
+        reward = -3*distance + 38
+        #print("distance: " + str(distance))
+
         v_goal = v * math.cos(pos_to_goal_vec_angle-vel_angle)
-        fast_reward = v_goal*5
-        
+        fast_reward = v_goal*2
+
         # print("Fast: ", fast_reward)
         reward = reward + fast_reward
         
         ## Safe
         d_min = min(state)
-        safe_reward = d_min
+        safe_reward = d_min *2/5
         reward = reward + safe_reward
         # print("Safe: ", safe_reward)
         
@@ -149,9 +153,8 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
         reward = reward + coffee_reward
         # print("Coffee: ", coffee_reward)
         # print("reward: ", reward)
-        
         self.last_action = action
-
+        print("reward: ", reward)
         return state, reward, done, {}
 
     def reset(self):
