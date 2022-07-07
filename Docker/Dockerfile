@@ -139,5 +139,12 @@ RUN git clone https://github.com/erlerobot/gym-gazebo.git
 WORKDIR /root/gym-gazebo
 RUN pip install -e .
 
+RUN apt-get install -y ros-melodic-vision-msgs
+WORKDIR /root
+RUN git clone https://github.com/robotics-upo/lightsfm.git
+WORKDIR /root/lightsfm
+RUN make
+RUN make install
+
 RUN echo "source /ros_setting.sh">> ~/.bashrc
 WORKDIR /root/gym-gazebo/gym_gazebo/envs/installation

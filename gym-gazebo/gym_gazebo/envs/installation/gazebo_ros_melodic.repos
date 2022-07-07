@@ -107,3 +107,11 @@ repositories:
     type: git
     url: https://github.com/yujinrobot/yujin_ocs
     version: release/0.8-melodic
+  servicesim:
+    type: git
+    url: https://github.com/osrf/servicesim.git
+    version: master
+  gazebo_sfm_plugin:
+    type: git
+    url: https://github.com/robotics-upo/gazebo_sfm_plugin.git
+    version: master
