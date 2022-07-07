@@ -44,7 +44,7 @@ python cafe_turtlebot_lidar_qlearn.py
 Note: In the first time, `bash setup_melodic.bash` builds the ROS packages and it takes long time. But once you built it, the execution files are retained and the build time will be shortened from the next time.
 
 ### Watch the simulation in Gazebo
-Create new terminal and enter the exiisting docker container's terminal
+Create new terminal and enter the existing docker container's terminal
 
 ```shell
 cd Docker
@@ -71,7 +71,7 @@ export ROBOT_INITIAL_POSE="-x 2.7 -y 2.7 -z 0.25 -R 0 -P 0 -Y -1.57"
 ```
 
 ### Change goal position
-export "GOAL_X" and "GOAL_Y" environment variablse like this
+export "GOAL_X" and "GOAL_Y" environment variables like this
 
 ```shell
 export GOAL_X="-3.0"
