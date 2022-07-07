@@ -5,8 +5,9 @@ Deep Reinforcement Learning (DRL) project for the Machine Intelligence course
 
 ## Assumed Environment
 - Ubuntu 20.04
+- Ubuntu 18.04
 
-(Maybe other versions are available ecause we use docker)
+(Maybe other versions are available because we use docker)
 
 ## Requirements
 - docker
@@ -57,7 +58,7 @@ Setup the environment and launch Gazebo
 ```shell
 source setup_melodic.bash
 source setup_turtlebot.bash
-source setup_display.bash
+source setup_display.sh
 gzclient
 ```
 
