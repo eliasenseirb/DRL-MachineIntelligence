@@ -57,7 +57,7 @@ Setup the environment and launch Gazebo
 ```shell
 source setup_melodic.bash
 source setup_turtlebot.bash
-source setup_display.bash
+source setup_display.sh
 gzclient
 ```
 
