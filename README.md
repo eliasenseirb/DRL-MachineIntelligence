@@ -42,10 +42,10 @@ cd_src
 python cafe_turtlebot_lidar_qlearn.py
 ```
 
-Note: In the first time, `bash setup_melodic.bash` builds the ROS packages and it takes long time. But once you built it, the execution files are retained and the build time will be shortened from the next time.
+Note: In the first time, `bash setup_melodic.bash` builds the ROS packages and it takes long time. But once it is built, the execution files are retained and the build time will be shortened from the next time.
 
 ### Watch the simulation in Gazebo
-Create new terminal and enter the existing docker container's terminal
+Create a new terminal and enter the existing docker container's terminal
 
 ```shell
 cd Docker
