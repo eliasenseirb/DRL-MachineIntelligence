@@ -35,11 +35,11 @@ if __name__ == '__main__':
     qlearn = qlearn.QLearn(actions=range(env.action_space.n),
                     alpha=0.1, gamma=0.8, epsilon=0.9)
 
-    LOAD_MODEL = False
+    LOAD_MODEL = True
     START_POINT = 0
     if LOAD_MODEL:
         #dont comment this out use LOAD_MODEL
-        model_name = "model2000.json"
+        model_name = "model3000.json"
         #dont change the line below
         qlearn.loadModel(modeldir, model_name) 
         START_POINT = int(model_name[5:8])

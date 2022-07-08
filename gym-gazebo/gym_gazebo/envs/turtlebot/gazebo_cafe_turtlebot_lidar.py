@@ -154,7 +154,7 @@ class GazeboCafeTurtlebotLidarEnv(gazebo_env.GazeboEnv):
         # print("Coffee: ", coffee_reward)
         # print("reward: ", reward)
         self.last_action = action
-        print("reward: ", reward)
+        #print("reward: ", reward)
         return state, reward, done, {}
 
     def reset(self):
